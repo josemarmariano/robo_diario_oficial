@@ -1,8 +1,8 @@
 import json
 import os
 import re
+import unicodedata
 from datetime import datetime
-
 from app.config import PASTA_RESULTADOS
 
 
@@ -97,6 +97,20 @@ def normalizar_texto(texto):
     texto = remover_cabecalhos_rodapes(texto)
     texto = juntar_palavras_quebradas(texto)
     texto = normalizar_espacos(texto)
+    return texto
+
+
+def normalizar_para_comparacao(texto):
+    texto = limpar_caracteres_invisiveis(texto)
+    texto = unicodedata.normalize("NFD", texto)
+    texto = "".join(
+        caractere for caractere in texto
+        if unicodedata.category(caractere) != "Mn"
+    )
+    texto = texto.upper()
+    texto = re.sub(r"\s+", " ", texto)
+    texto = texto.strip()
+
     return texto
 
 
@@ -230,52 +244,272 @@ def calcular_paginas_finais_sumario(sumario, total_paginas):
     return sumario
 
 
-def obter_texto_paginas_por_intervalo(paginas, pagina_inicial, pagina_final):
-    textos = []
+def eh_inicio_conteudo_real(linha):
+    padroes = [
+        r"^DECRETO\s+N[ºO]",
+        r"^PORTARIA",
+        r"^LEI\s+N[ºO]",
+        r"^LEI COMPLEMENTAR\s+N[ºO]",
+        r"^COMUNICADO",
+        r"^AVISO DE LICITAÇÃO",
+        r"^EDITAL",
+        r"^TERMO DE",
+        r"^ATA DE",
+        r"^EXTRATO",
+        r"^DISPENSA DE LICITAÇÃO",
+        r"^NOTIFICAÇÃO",
+    ]
+
+    linha_limpa = linha.strip()
+
+    for padrao in padroes:
+        if re.search(padrao, linha_limpa, flags=re.IGNORECASE):
+            return True
+
+    return False
+
+
+def remover_sumario_primeira_pagina(texto):
+    linhas = texto.splitlines()
+    indice_inicio_sumario = None
+
+    for indice, linha in enumerate(linhas):
+        if linha.strip().lower() == "seções":
+            indice_inicio_sumario = indice
+            break
+
+    if indice_inicio_sumario is None:
+        return texto
+
+    indice_fim_sumario = None
+
+    for indice in range(indice_inicio_sumario + 1, len(linhas)):
+        linha_limpa = limpar_linha_sumario(linhas[indice])
+
+        if eh_inicio_conteudo_real(linha_limpa):
+            indice_fim_sumario = indice
+            break
+
+    if indice_fim_sumario is None:
+        linhas_resultado = linhas[:indice_inicio_sumario]
+    else:
+        linhas_resultado = (
+            linhas[:indice_inicio_sumario]
+            + linhas[indice_fim_sumario:]
+        )
+
+    return "\n".join(linhas_resultado)
+
+
+def preparar_texto_pagina_para_json(pagina, remover_sumario=False):
+    texto = pagina["texto"]
+
+    if remover_sumario:
+        texto = remover_sumario_primeira_pagina(texto)
+
+    texto = normalizar_texto(texto)
+
+    return texto
+
+
+def montar_linhas_documento(paginas):
+    linhas_documento = []
 
     for pagina in paginas:
         numero_pagina = pagina["pagina"]
+        remover_sumario = numero_pagina == 1
 
-        if pagina_inicial <= numero_pagina <= pagina_final:
-            texto_bruto = pagina["texto"]
-            texto_normalizado = normalizar_texto(texto_bruto)
+        texto_normalizado = preparar_texto_pagina_para_json(
+            pagina=pagina,
+            remover_sumario=remover_sumario
+        )
 
-            textos.append(
+        for linha in texto_normalizado.splitlines():
+            linha_limpa = linha.strip()
+
+            if not linha_limpa:
+                continue
+
+            linhas_documento.append(
                 {
                     "pagina": numero_pagina,
-                    "texto_bruto": texto_bruto,
-                    "texto_normalizado": texto_normalizado,
-                    "qtde_caracteres_bruto": len(texto_bruto),
-                    "qtde_caracteres_normalizado": len(texto_normalizado)
+                    "texto": linha_limpa
                 }
             )
 
-    return textos
+    return linhas_documento
+
+
+def combinar_linhas_para_comparacao(linhas_documento, indice_inicio, limite=3):
+    partes = []
+    indice = indice_inicio
+
+    while indice < len(linhas_documento) and len(partes) < limite:
+        texto = linhas_documento[indice]["texto"].strip()
+
+        if texto:
+            partes.append(texto)
+
+        combinado = " ".join(partes)
+
+        yield {
+            "texto": combinado,
+            "indice_fim": indice + 1
+        }
+
+        indice += 1
+
+
+def localizar_titulo_secao(linhas_documento, titulo, pagina_minima, indice_minimo):
+    titulo_comparacao = normalizar_para_comparacao(titulo)
+
+    for indice in range(indice_minimo, len(linhas_documento)):
+        linha = linhas_documento[indice]
+
+        if linha["pagina"] < pagina_minima:
+            continue
+
+        for tentativa in combinar_linhas_para_comparacao(linhas_documento, indice):
+            texto_comparacao = normalizar_para_comparacao(tentativa["texto"])
+
+            if texto_comparacao == titulo_comparacao:
+                return {
+                    "indice_inicio": indice,
+                    "indice_fim_titulo": tentativa["indice_fim"],
+                    "pagina": linha["pagina"]
+                }
+
+    return None
+
+
+def localizar_inicio_pagina(linhas_documento, pagina):
+    for indice, linha in enumerate(linhas_documento):
+        if linha["pagina"] >= pagina:
+            return indice
+
+    return len(linhas_documento)
+
+
+def localizar_fim_pagina(linhas_documento, pagina):
+    ultimo_indice = len(linhas_documento)
+
+    for indice, linha in enumerate(linhas_documento):
+        if linha["pagina"] > pagina:
+            return indice
+
+    return ultimo_indice
+
+
+def localizar_posicoes_secoes(sumario, linhas_documento):
+    posicoes = []
+    indice_busca = 0
+
+    for item in sumario:
+        posicao = localizar_titulo_secao(
+            linhas_documento=linhas_documento,
+            titulo=item["secao"],
+            pagina_minima=item["pagina_inicial"],
+            indice_minimo=indice_busca
+        )
+
+        if posicao is None:
+            indice_inicio = localizar_inicio_pagina(
+                linhas_documento,
+                item["pagina_inicial"]
+            )
+
+            posicao = {
+                "indice_inicio": indice_inicio,
+                "indice_fim_titulo": indice_inicio,
+                "pagina": item["pagina_inicial"],
+                "localizado_por_titulo": False
+            }
+        else:
+            posicao["localizado_por_titulo"] = True
+
+        posicao["secao"] = item["secao"]
+        posicao["pagina_inicial_sumario"] = item["pagina_inicial"]
+        posicao["pagina_final_sumario"] = item["pagina_final"]
+
+        posicoes.append(posicao)
+
+        indice_busca = max(posicao["indice_inicio"] + 1, indice_busca + 1)
+
+    return posicoes
+
+
+def agrupar_linhas_por_pagina(linhas, paginas_origem):
+    paginas = {}
+    imagens_por_pagina = {}
+
+    for pagina_origem in paginas_origem:
+        imagens_por_pagina[pagina_origem["pagina"]] = (
+            pagina_origem.get("possui_imagem", False)
+        )
+
+    for linha in linhas:
+        numero_pagina = linha["pagina"]
+
+        if numero_pagina not in paginas:
+            paginas[numero_pagina] = []
+
+        paginas[numero_pagina].append(linha["texto"])
+
+    resultado = []
+
+    for numero_pagina in sorted(paginas):
+        texto = "\n".join(
+            paginas[numero_pagina]
+        ).strip()
+
+        resultado.append(
+            {
+                "pagina": numero_pagina,
+                "texto": texto,
+                "possui_imagem": imagens_por_pagina.get(
+                    numero_pagina,
+                    False
+                )
+            }
+        )
+
+    return resultado
 
 
 def montar_secoes(sumario, paginas):
+    linhas_documento = montar_linhas_documento(paginas)
+    posicoes = localizar_posicoes_secoes(sumario, linhas_documento)
+
     secoes = []
 
-    for item in sumario:
-        paginas_secao = obter_texto_paginas_por_intervalo(
-            paginas=paginas,
-            pagina_inicial=item["pagina_inicial"],
-            pagina_final=item["pagina_final"]
-        )
+    for indice, item in enumerate(posicoes):
+        indice_inicio = item["indice_inicio"]
 
-        texto_normalizado_secao = "\n\n".join(
-            pagina["texto_normalizado"] for pagina in paginas_secao
-        ).strip()
+        if indice < len(posicoes) - 1:
+            indice_fim = posicoes[indice + 1]["indice_inicio"]
+        else:
+            indice_fim = len(linhas_documento)
+
+        linhas_secao = linhas_documento[indice_inicio:indice_fim]
+
+        paginas_secao = agrupar_linhas_por_pagina(
+            linhas_secao,
+            paginas
+        )        
+
+        if paginas_secao:
+            pagina_inicial = paginas_secao[0]["pagina"]
+            pagina_final = paginas_secao[-1]["pagina"]
+        else:
+            pagina_inicial = item["pagina_inicial_sumario"]
+            pagina_final = item["pagina_final_sumario"]
 
         secoes.append(
             {
                 "secao": item["secao"],
-                "pagina_inicial": item["pagina_inicial"],
-                "pagina_final": item["pagina_final"],
-                "qtde_paginas": len(paginas_secao),
-                "qtde_caracteres_normalizado": len(texto_normalizado_secao),
+                "pagina_inicial": pagina_inicial,
+                "pagina_final": pagina_final,
                 "paginas": paginas_secao,
-                "texto_normalizado": texto_normalizado_secao
             }
         )
 
@@ -290,8 +524,6 @@ def montar_documento_json(caminho_pdf, paginas):
         "arquivo_origem": os.path.basename(caminho_pdf),
         "data_processamento": datetime.now().isoformat(timespec="seconds"),
         "total_paginas": len(paginas),
-        "sumario_extraido": bool(sumario),
-        "total_itens_sumario": len(sumario),
         "sumario": sumario,
         "secoes": secoes
     }

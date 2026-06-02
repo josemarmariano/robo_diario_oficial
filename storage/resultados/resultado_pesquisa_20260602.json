@@ -1,0 +1,61 @@
+{
+  "data_processamento": "2026-06-02T16:56:29",
+  "termos_pesquisados": [
+    "ISS",
+    "ISSQN",
+    "isenção tributária",
+    "atualização das novas aliquotas",
+    "tributário municipal"
+  ],
+  "total_resultados": 4,
+  "resultados": [
+    {
+      "termo": "ISS",
+      "arquivo": "diario_oficial_2026_03_27.pdf",
+      "secao": "Gerência de Arrecadação",
+      "pagina": 36,
+      "ocorrencias": 2,
+      "possui_imagem": false,
+      "trechos": [
+        "...recam na divisao de fiscalizacao da gerencia de arrecadacao, para tratar deassuntos relacionados ao levantamento fiscal especifico, quitacao de debitos de imposto sobre servicos – iss e outrosassuntos pertinentes, relacionado ao processo administrativo de levantamento especifico n° 151124/2025, de todosos procedimentos adotados nos presente processos, todos apl...",
+        "...recam na divisao de fiscalizacao da gerencia de arrecadacao, para tratar deassuntos relacionados ao levantamento fiscal especifico, quitacao de debitos de imposto sobre servicos – iss e outrosassuntos pertinentes, relacionado ao processo administrativo n° 086967/2025, de todos os procedimentos adotadosnos presente processos, todos aplicados na data de 24/03/202..."
+      ]
+    },
+    {
+      "termo": "ISSQN",
+      "arquivo": "diario_oficial_2026_03_27.pdf",
+      "secao": "Gerência de Arrecadação",
+      "pagina": 36,
+      "ocorrencias": 2,
+      "possui_imagem": false,
+      "trechos": [
+        "...de piracicaba, usando das atribuicoes que lhe sao conferidas por lei; considerando a necessaria adaptacao sistemica da secretaria de financas, nos modulos de arrecadacao do itbi e issqn para a atualizacao das novas alıquotas incidentes so o issqn previstas na lei complementar nº 477/2025, que institui o codigo tributario do municıpio de piracicaba; considerando o...",
+        "...por lei; considerando a necessaria adaptacao sistemica da secretaria de financas, nos modulos de arrecadacao do itbi e issqn para a atualizacao das novas alıquotas incidentes so o issqn previstas na lei complementar nº 477/2025, que institui o codigo tributario do municıpio de piracicaba; considerando o pleito formulado pelso contribuintes quanto as di iculdades..."
+      ]
+    },
+    {
+      "termo": "atualização das novas aliquotas",
+      "arquivo": "diario_oficial_2026_03_27.pdf",
+      "secao": "Gerência de Arrecadação",
+      "pagina": 36,
+      "ocorrencias": 1,
+      "possui_imagem": false,
+      "trechos": [
+        "..., usando das atribuicoes que lhe sao conferidas por lei; considerando a necessaria adaptacao sistemica da secretaria de financas, nos modulos de arrecadacao do itbi e issqn para a atualizacao das novas alıquotas incidentes so o issqn previstas na lei complementar nº 477/2025, que institui o codigo tributario do municıpio de piracicaba; considerando o pleito formulado pelso contribuintes q..."
+      ]
+    },
+    {
+      "termo": "tributário municipal",
+      "arquivo": "diario_oficial_2026_03_27.pdf",
+      "secao": "Gerência de Arrecadação",
+      "pagina": 36,
+      "ocorrencias": 3,
+      "possui_imagem": false,
+      "trechos": [
+        "...parecimento do presente edital, implicara no lancamento dos referidos debitos em divida ativa, nostermos do artigo 79 da lei complementar nº 477, de 29 de dezembro de 2025 (codigo tributario municipal). ocontribuinte podera impugnar a presente exigencia fiscal, independente de previo deposito, no prazo de 20 (vinte)dias, contados da publicacao do edital, mediante defesa escrita...",
+        "...parecimento do presente edital, implicara no lancamento dos referidos debitos em divida ativa, nostermos do artigo 79 da lei complementar nº 477, de 29 de dezembro de 2025 (codigo tributario municipal). ocontribuinte podera impugnar a presente exigencia fiscal, independente de previo deposito, no prazo de 20 (vinte)dias, contados da publicacao do edital, mediante defesa escrita...",
+        "...ferido decreto na imprensa o icial para normatizar a aplicabilidade da lei complementar nº 477, de 29 de dezembro de 2025; considerando a competencia para regulamentacao do codigo tributario municipal, prevista no art. 6º da lei complementar municipal n° 477/2025; resolve: art. 1º a lei complementar municipal n° 477/2025 passa a produzir efeitos, excepcionalmente, a partir de 0..."
+      ]
+    }
+  ]
+}
