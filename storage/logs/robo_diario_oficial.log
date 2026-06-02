@@ -499,3 +499,149 @@ TypeError: unsupported operand type(s) for /: 'str' and 'int'
 2026-06-01 22:16:55,903 | INFO | robo_diario_oficial | Arquivo bruto gerado: storage/resultados/diario_oficial_2026_05_28_01_bruto.txt
 2026-06-01 22:16:55,903 | INFO | robo_diario_oficial | Documento JSON gerado: storage/resultados/diario_oficial_2026_05_28_02_documento.json
 2026-06-01 22:16:55,903 | INFO | robo_diario_oficial | Robo Diario Oficial finalizado com sucesso.
+2026-06-02 06:10:56,139 | INFO | robo_diario_oficial | Configuracoes carregadas com sucesso.
+2026-06-02 06:10:56,139 | INFO | robo_diario_oficial | Robo Diario Oficial iniciado.
+2026-06-02 06:10:56,161 | INFO | robo_diario_oficial | DATA_TESTE informada: 2026-05-28
+2026-06-02 06:10:56,163 | INFO | robo_diario_oficial | Iniciando download do Diario Oficial.
+2026-06-02 06:10:56,163 | INFO | robo_diario_oficial | URL: https://diariooficial.piracicaba.sp.gov.br/download/2026/05/28/
+2026-06-02 06:10:56,163 | INFO | robo_diario_oficial | Arquivo destino: storage/pdfs/diario_oficial_2026_05_28.pdf
+2026-06-02 06:10:56,164 | INFO | robo_diario_oficial | Arquivo ja existe. Download ignorado: storage/pdfs/diario_oficial_2026_05_28.pdf
+2026-06-02 06:10:56,175 | INFO | robo_diario_oficial | Arquivo existente validado: storage/pdfs/diario_oficial_2026_05_28.pdf (2553559 bytes / 2.44 MB)
+2026-06-02 06:10:56,176 | INFO | robo_diario_oficial | PDF disponivel para processamento: storage/pdfs/diario_oficial_2026_05_28.pdf
+2026-06-02 06:10:56,333 | INFO | robo_diario_oficial | Total de paginas identificado: 54
+2026-06-02 06:10:56,346 | INFO | robo_diario_oficial | Iniciando extracao de texto do PDF.
+2026-06-02 06:10:56,347 | INFO | robo_diario_oficial | Total de paginas: 54
+2026-06-02 06:10:56,447 | INFO | robo_diario_oficial | Pagina 1 extraida com 4095 caracteres.
+2026-06-02 06:10:56,456 | INFO | robo_diario_oficial | Pagina 2 extraida com 1504 caracteres.
+2026-06-02 06:10:56,461 | INFO | robo_diario_oficial | Pagina 3 extraida com 7896 caracteres.
+2026-06-02 06:10:56,474 | INFO | robo_diario_oficial | Pagina 4 extraida com 10020 caracteres.
+2026-06-02 06:10:56,476 | INFO | robo_diario_oficial | Pagina 5 extraida com 2253 caracteres.
+2026-06-02 06:10:56,480 | INFO | robo_diario_oficial | Pagina 6 extraida com 1508 caracteres.
+2026-06-02 06:10:56,481 | INFO | robo_diario_oficial | Pagina 7 extraida com 351 caracteres.
+2026-06-02 06:10:56,484 | INFO | robo_diario_oficial | Pagina 8 extraida com 1213 caracteres.
+2026-06-02 06:10:56,488 | INFO | robo_diario_oficial | Pagina 9 extraida com 1167 caracteres.
+2026-06-02 06:10:56,493 | INFO | robo_diario_oficial | Pagina 10 extraida com 9026 caracteres.
+2026-06-02 06:10:56,496 | INFO | robo_diario_oficial | Pagina 11 extraida com 1116 caracteres.
+2026-06-02 06:10:56,503 | INFO | robo_diario_oficial | Pagina 12 extraida com 2492 caracteres.
+2026-06-02 06:10:56,520 | INFO | robo_diario_oficial | Pagina 13 extraida com 2512 caracteres.
+2026-06-02 06:10:56,529 | INFO | robo_diario_oficial | Pagina 14 extraida com 2451 caracteres.
+2026-06-02 06:10:56,537 | INFO | robo_diario_oficial | Pagina 15 extraida com 2210 caracteres.
+2026-06-02 06:10:56,543 | INFO | robo_diario_oficial | Pagina 16 extraida com 2112 caracteres.
+2026-06-02 06:10:56,549 | INFO | robo_diario_oficial | Pagina 17 extraida com 2613 caracteres.
+2026-06-02 06:10:56,555 | INFO | robo_diario_oficial | Pagina 18 extraida com 2490 caracteres.
+2026-06-02 06:10:56,561 | INFO | robo_diario_oficial | Pagina 19 extraida com 2045 caracteres.
+2026-06-02 06:10:56,566 | INFO | robo_diario_oficial | Pagina 20 extraida com 2959 caracteres.
+2026-06-02 06:10:56,573 | INFO | robo_diario_oficial | Pagina 21 extraida com 2413 caracteres.
+2026-06-02 06:10:56,578 | INFO | robo_diario_oficial | Pagina 22 extraida com 2057 caracteres.
+2026-06-02 06:10:56,584 | INFO | robo_diario_oficial | Pagina 23 extraida com 3082 caracteres.
+2026-06-02 06:10:56,599 | INFO | robo_diario_oficial | Pagina 24 extraida com 2911 caracteres.
+2026-06-02 06:10:56,609 | INFO | robo_diario_oficial | Pagina 25 extraida com 2280 caracteres.
+2026-06-02 06:10:56,617 | INFO | robo_diario_oficial | Pagina 26 extraida com 2645 caracteres.
+2026-06-02 06:10:56,622 | INFO | robo_diario_oficial | Pagina 27 extraida com 2131 caracteres.
+2026-06-02 06:10:56,625 | INFO | robo_diario_oficial | Pagina 28 extraida com 1359 caracteres.
+2026-06-02 06:10:56,632 | INFO | robo_diario_oficial | Pagina 29 extraida com 4424 caracteres.
+2026-06-02 06:10:56,637 | INFO | robo_diario_oficial | Pagina 30 extraida com 1271 caracteres.
+2026-06-02 06:10:56,643 | INFO | robo_diario_oficial | Pagina 31 extraida com 1711 caracteres.
+2026-06-02 06:10:56,648 | INFO | robo_diario_oficial | Pagina 32 extraida com 3592 caracteres.
+2026-06-02 06:10:56,654 | INFO | robo_diario_oficial | Pagina 33 extraida com 4502 caracteres.
+2026-06-02 06:10:56,659 | INFO | robo_diario_oficial | Pagina 34 extraida com 4021 caracteres.
+2026-06-02 06:10:56,665 | INFO | robo_diario_oficial | Pagina 35 extraida com 3326 caracteres.
+2026-06-02 06:10:56,669 | INFO | robo_diario_oficial | Pagina 36 extraida com 997 caracteres.
+2026-06-02 06:10:56,670 | INFO | robo_diario_oficial | Pagina 37 extraida com 1754 caracteres.
+2026-06-02 06:10:56,678 | INFO | robo_diario_oficial | Pagina 38 extraida com 4537 caracteres.
+2026-06-02 06:10:56,685 | INFO | robo_diario_oficial | Pagina 39 extraida com 3077 caracteres.
+2026-06-02 06:10:56,686 | INFO | robo_diario_oficial | Pagina 40 extraida com 1356 caracteres.
+2026-06-02 06:10:56,692 | INFO | robo_diario_oficial | Pagina 41 extraida com 4424 caracteres.
+2026-06-02 06:10:56,697 | INFO | robo_diario_oficial | Pagina 42 extraida com 1271 caracteres.
+2026-06-02 06:10:56,700 | INFO | robo_diario_oficial | Pagina 43 extraida com 1711 caracteres.
+2026-06-02 06:10:56,707 | INFO | robo_diario_oficial | Pagina 44 extraida com 3592 caracteres.
+2026-06-02 06:10:56,713 | INFO | robo_diario_oficial | Pagina 45 extraida com 4502 caracteres.
+2026-06-02 06:10:56,719 | INFO | robo_diario_oficial | Pagina 46 extraida com 4021 caracteres.
+2026-06-02 06:10:56,727 | INFO | robo_diario_oficial | Pagina 47 extraida com 3326 caracteres.
+2026-06-02 06:10:56,734 | INFO | robo_diario_oficial | Pagina 48 extraida com 997 caracteres.
+2026-06-02 06:10:56,736 | INFO | robo_diario_oficial | Pagina 49 extraida com 1754 caracteres.
+2026-06-02 06:10:56,745 | INFO | robo_diario_oficial | Pagina 50 extraida com 8396 caracteres.
+2026-06-02 06:10:56,755 | INFO | robo_diario_oficial | Pagina 51 extraida com 7631 caracteres.
+2026-06-02 06:10:56,761 | INFO | robo_diario_oficial | Pagina 52 extraida com 5625 caracteres.
+2026-06-02 06:10:56,768 | INFO | robo_diario_oficial | Pagina 53 extraida com 1529 caracteres.
+2026-06-02 06:10:56,769 | INFO | robo_diario_oficial | Pagina 54 extraida com 1351 caracteres.
+2026-06-02 06:10:56,773 | INFO | robo_diario_oficial | Extracao de texto finalizada.
+2026-06-02 06:10:56,774 | INFO | robo_diario_oficial | Paginas com texto extraido: 54 de 54
+2026-06-02 06:10:56,777 | INFO | robo_diario_oficial | Arquivo bruto salvo em: storage/resultados/diario_oficial_2026_05_28_01_bruto.txt
+2026-06-02 06:10:56,777 | INFO | robo_diario_oficial | Documento JSON salvo em: storage/resultados/diario_oficial_2026_05_28_02_documento.json
+2026-06-02 06:10:56,777 | INFO | robo_diario_oficial | Arquivo bruto gerado: storage/resultados/diario_oficial_2026_05_28_01_bruto.txt
+2026-06-02 06:10:56,777 | INFO | robo_diario_oficial | Documento JSON gerado: storage/resultados/diario_oficial_2026_05_28_02_documento.json
+2026-06-02 06:10:56,777 | INFO | robo_diario_oficial | Robo Diario Oficial finalizado com sucesso.
+2026-06-02 06:31:55,681 | INFO | robo_diario_oficial | Configuracoes carregadas com sucesso.
+2026-06-02 06:31:55,682 | INFO | robo_diario_oficial | Robo Diario Oficial iniciado.
+2026-06-02 06:31:55,683 | INFO | robo_diario_oficial | DATA_TESTE informada: 2026-05-28
+2026-06-02 06:31:55,683 | INFO | robo_diario_oficial | Iniciando download do Diario Oficial.
+2026-06-02 06:31:55,683 | INFO | robo_diario_oficial | URL: https://diariooficial.piracicaba.sp.gov.br/download/2026/05/28/
+2026-06-02 06:31:55,683 | INFO | robo_diario_oficial | Arquivo destino: storage/pdfs/diario_oficial_2026_05_28.pdf
+2026-06-02 06:31:55,683 | INFO | robo_diario_oficial | Arquivo ja existe. Download ignorado: storage/pdfs/diario_oficial_2026_05_28.pdf
+2026-06-02 06:31:55,683 | INFO | robo_diario_oficial | Arquivo existente validado: storage/pdfs/diario_oficial_2026_05_28.pdf (2553559 bytes / 2.44 MB)
+2026-06-02 06:31:55,683 | INFO | robo_diario_oficial | PDF disponivel para processamento: storage/pdfs/diario_oficial_2026_05_28.pdf
+2026-06-02 06:31:55,688 | INFO | robo_diario_oficial | Total de paginas identificado: 54
+2026-06-02 06:31:55,692 | INFO | robo_diario_oficial | Iniciando extracao de texto do PDF.
+2026-06-02 06:31:55,693 | INFO | robo_diario_oficial | Total de paginas: 54
+2026-06-02 06:31:55,737 | INFO | robo_diario_oficial | Pagina 1 extraida com 4095 caracteres.
+2026-06-02 06:31:55,746 | INFO | robo_diario_oficial | Pagina 2 extraida com 1504 caracteres.
+2026-06-02 06:31:55,752 | INFO | robo_diario_oficial | Pagina 3 extraida com 7896 caracteres.
+2026-06-02 06:31:55,766 | INFO | robo_diario_oficial | Pagina 4 extraida com 10020 caracteres.
+2026-06-02 06:31:55,769 | INFO | robo_diario_oficial | Pagina 5 extraida com 2253 caracteres.
+2026-06-02 06:31:55,775 | INFO | robo_diario_oficial | Pagina 6 extraida com 1508 caracteres.
+2026-06-02 06:31:55,775 | INFO | robo_diario_oficial | Pagina 7 extraida com 351 caracteres.
+2026-06-02 06:31:55,779 | INFO | robo_diario_oficial | Pagina 8 extraida com 1213 caracteres.
+2026-06-02 06:31:55,784 | INFO | robo_diario_oficial | Pagina 9 extraida com 1167 caracteres.
+2026-06-02 06:31:55,790 | INFO | robo_diario_oficial | Pagina 10 extraida com 9026 caracteres.
+2026-06-02 06:31:55,792 | INFO | robo_diario_oficial | Pagina 11 extraida com 1116 caracteres.
+2026-06-02 06:31:55,799 | INFO | robo_diario_oficial | Pagina 12 extraida com 2492 caracteres.
+2026-06-02 06:31:55,806 | INFO | robo_diario_oficial | Pagina 13 extraida com 2512 caracteres.
+2026-06-02 06:31:55,812 | INFO | robo_diario_oficial | Pagina 14 extraida com 2451 caracteres.
+2026-06-02 06:31:55,819 | INFO | robo_diario_oficial | Pagina 15 extraida com 2210 caracteres.
+2026-06-02 06:31:55,826 | INFO | robo_diario_oficial | Pagina 16 extraida com 2112 caracteres.
+2026-06-02 06:31:55,832 | INFO | robo_diario_oficial | Pagina 17 extraida com 2613 caracteres.
+2026-06-02 06:31:55,839 | INFO | robo_diario_oficial | Pagina 18 extraida com 2490 caracteres.
+2026-06-02 06:31:55,846 | INFO | robo_diario_oficial | Pagina 19 extraida com 2045 caracteres.
+2026-06-02 06:31:55,853 | INFO | robo_diario_oficial | Pagina 20 extraida com 2959 caracteres.
+2026-06-02 06:31:55,860 | INFO | robo_diario_oficial | Pagina 21 extraida com 2413 caracteres.
+2026-06-02 06:31:55,867 | INFO | robo_diario_oficial | Pagina 22 extraida com 2057 caracteres.
+2026-06-02 06:31:55,876 | INFO | robo_diario_oficial | Pagina 23 extraida com 3082 caracteres.
+2026-06-02 06:31:55,883 | INFO | robo_diario_oficial | Pagina 24 extraida com 2911 caracteres.
+2026-06-02 06:31:55,890 | INFO | robo_diario_oficial | Pagina 25 extraida com 2280 caracteres.
+2026-06-02 06:31:55,896 | INFO | robo_diario_oficial | Pagina 26 extraida com 2645 caracteres.
+2026-06-02 06:31:55,902 | INFO | robo_diario_oficial | Pagina 27 extraida com 2131 caracteres.
+2026-06-02 06:31:55,905 | INFO | robo_diario_oficial | Pagina 28 extraida com 1359 caracteres.
+2026-06-02 06:31:55,913 | INFO | robo_diario_oficial | Pagina 29 extraida com 4424 caracteres.
+2026-06-02 06:31:55,920 | INFO | robo_diario_oficial | Pagina 30 extraida com 1271 caracteres.
+2026-06-02 06:31:55,922 | INFO | robo_diario_oficial | Pagina 31 extraida com 1711 caracteres.
+2026-06-02 06:31:55,928 | INFO | robo_diario_oficial | Pagina 32 extraida com 3592 caracteres.
+2026-06-02 06:31:55,935 | INFO | robo_diario_oficial | Pagina 33 extraida com 4502 caracteres.
+2026-06-02 06:31:55,940 | INFO | robo_diario_oficial | Pagina 34 extraida com 4021 caracteres.
+2026-06-02 06:31:55,946 | INFO | robo_diario_oficial | Pagina 35 extraida com 3326 caracteres.
+2026-06-02 06:31:55,952 | INFO | robo_diario_oficial | Pagina 36 extraida com 997 caracteres.
+2026-06-02 06:31:55,953 | INFO | robo_diario_oficial | Pagina 37 extraida com 1754 caracteres.
+2026-06-02 06:31:55,962 | INFO | robo_diario_oficial | Pagina 38 extraida com 4537 caracteres.
+2026-06-02 06:31:55,970 | INFO | robo_diario_oficial | Pagina 39 extraida com 3077 caracteres.
+2026-06-02 06:31:55,971 | INFO | robo_diario_oficial | Pagina 40 extraida com 1356 caracteres.
+2026-06-02 06:31:55,977 | INFO | robo_diario_oficial | Pagina 41 extraida com 4424 caracteres.
+2026-06-02 06:31:55,984 | INFO | robo_diario_oficial | Pagina 42 extraida com 1271 caracteres.
+2026-06-02 06:31:55,986 | INFO | robo_diario_oficial | Pagina 43 extraida com 1711 caracteres.
+2026-06-02 06:31:55,994 | INFO | robo_diario_oficial | Pagina 44 extraida com 3592 caracteres.
+2026-06-02 06:31:56,003 | INFO | robo_diario_oficial | Pagina 45 extraida com 4502 caracteres.
+2026-06-02 06:31:56,012 | INFO | robo_diario_oficial | Pagina 46 extraida com 4021 caracteres.
+2026-06-02 06:31:56,020 | INFO | robo_diario_oficial | Pagina 47 extraida com 3326 caracteres.
+2026-06-02 06:31:56,027 | INFO | robo_diario_oficial | Pagina 48 extraida com 997 caracteres.
+2026-06-02 06:31:56,029 | INFO | robo_diario_oficial | Pagina 49 extraida com 1754 caracteres.
+2026-06-02 06:31:56,036 | INFO | robo_diario_oficial | Pagina 50 extraida com 8396 caracteres.
+2026-06-02 06:31:56,043 | INFO | robo_diario_oficial | Pagina 51 extraida com 7631 caracteres.
+2026-06-02 06:31:56,046 | INFO | robo_diario_oficial | Pagina 52 extraida com 5625 caracteres.
+2026-06-02 06:31:56,054 | INFO | robo_diario_oficial | Pagina 53 extraida com 1529 caracteres.
+2026-06-02 06:31:56,055 | INFO | robo_diario_oficial | Pagina 54 extraida com 1351 caracteres.
+2026-06-02 06:31:56,059 | INFO | robo_diario_oficial | Extracao de texto finalizada.
+2026-06-02 06:31:56,059 | INFO | robo_diario_oficial | Paginas com texto extraido: 54 de 54
+2026-06-02 06:31:56,109 | INFO | robo_diario_oficial | Arquivo bruto salvo em: storage/resultados/diario_oficial_2026_05_28_01_bruto.txt
+2026-06-02 06:31:56,109 | INFO | robo_diario_oficial | Documento JSON salvo em: storage/resultados/diario_oficial_2026_05_28_02_documento.json
+2026-06-02 06:31:56,109 | INFO | robo_diario_oficial | Arquivo bruto gerado: storage/resultados/diario_oficial_2026_05_28_01_bruto.txt
+2026-06-02 06:31:56,109 | INFO | robo_diario_oficial | Documento JSON gerado: storage/resultados/diario_oficial_2026_05_28_02_documento.json
+2026-06-02 06:31:56,109 | INFO | robo_diario_oficial | Robo Diario Oficial finalizado com sucesso.

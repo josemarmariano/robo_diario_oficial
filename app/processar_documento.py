@@ -22,12 +22,22 @@ def montar_caminho_saida(caminho_pdf, sufixo, extensao):
 
 
 def limpar_caracteres_invisiveis(texto):
-    texto = texto.replace("\u00ad", "")
-    texto = texto.replace("\ufffe", "")
-    texto = texto.replace("\ufeff", "")
-    texto = texto.replace("\x0c", "")
-    texto = texto.replace("\u0008", "")
-    texto = texto.replace("\xa0", " ")
+    if texto is None:
+        return ""
+
+    substituicoes = {
+        "\u00ad": "",
+        "\ufeff": "",
+        "\ufffe": "",
+        "\xa0": " ",
+    }
+
+    for origem, destino in substituicoes.items():
+        texto = texto.replace(origem, destino)
+
+    texto = re.sub(r"[\x00-\x08\x0B\x0C\x0E-\x1F]", " ", texto)
+    texto = re.sub(r"[\u200B-\u200F\u202A-\u202E\u2060-\u206F]", "", texto)
+
     return texto
 
 
@@ -90,6 +100,36 @@ def normalizar_texto(texto):
     return texto
 
 
+def limpar_linha_sumario(linha):
+    linha = limpar_caracteres_invisiveis(linha)
+    linha = re.sub(r"[ \t]+", " ", linha)
+    return linha.strip()
+
+
+def linha_eh_numero_pagina(linha):
+    return bool(re.fullmatch(r"\d+", linha.strip()))
+
+
+def extrair_item_sumario_mesma_linha(linha):
+    linha = limpar_linha_sumario(linha)
+
+    match = re.match(r"^(?P<secao>.+?)\s+(?P<pagina>\d+)$", linha)
+
+    if not match:
+        return None
+
+    secao = match.group("secao").strip()
+    pagina = int(match.group("pagina"))
+
+    if len(secao) < 3:
+        return None
+
+    return {
+        "secao": secao,
+        "pagina_inicial": pagina
+    }
+
+
 def salvar_bruto(caminho_pdf, paginas):
     caminho_bruto = montar_caminho_saida(caminho_pdf, "01_bruto", "txt")
 
@@ -105,66 +145,73 @@ def salvar_bruto(caminho_pdf, paginas):
     return caminho_bruto
 
 
-def eh_linha_sumario(linha):
-    linha = linha.strip()
-
-    if not linha:
-        return False
-
-    if linha.lower() == "seções":
-        return False
-
-    return bool(re.search(r"\s+\d+$", linha))
-
-
-def extrair_nome_e_pagina_sumario(linha):
-    linha = linha.strip()
-
-    match = re.search(r"^(?P<nome>.+?)\s+(?P<pagina>\d+)$", linha)
-
-    if not match:
-        return None
-
-    nome = match.group("nome").strip()
-    pagina = int(match.group("pagina"))
-
-    if len(nome) < 3:
-        return None
-
-    return {
-        "secao": nome,
-        "pagina_inicial": pagina
-    }
-
-
 def extrair_sumario(paginas):
     if not paginas:
         return []
 
-    texto_primeira_pagina = normalizar_texto(paginas[0]["texto"])
+    texto_primeira_pagina = limpar_caracteres_invisiveis(paginas[0]["texto"])
     linhas = texto_primeira_pagina.splitlines()
 
     sumario = []
+    secoes_capturadas = set()
     lendo_sumario = False
+    indice = 0
 
-    for linha in linhas:
-        linha_limpa = linha.strip()
-
-        if linha_limpa.lower() == "seções":
-            lendo_sumario = True
-            continue
+    while indice < len(linhas):
+        linha_atual = limpar_linha_sumario(linhas[indice])
 
         if not lendo_sumario:
+            if linha_atual.lower() == "seções":
+                lendo_sumario = True
+
+            indice += 1
             continue
 
-        if re.search(r"^DECRETO\s+N[ºO]", linha_limpa, flags=re.IGNORECASE):
+        if not linha_atual:
+            indice += 1
+            continue
+
+        if sumario and linha_atual.upper() in secoes_capturadas:
             break
 
-        if eh_linha_sumario(linha_limpa):
-            item = extrair_nome_e_pagina_sumario(linha_limpa)
+        item_mesma_linha = extrair_item_sumario_mesma_linha(linha_atual)
 
-            if item:
+        if item_mesma_linha:
+            sumario.append(item_mesma_linha)
+            secoes_capturadas.add(item_mesma_linha["secao"].upper())
+
+            indice += 1
+            continue
+
+        proximo_indice = indice + 1
+
+        while proximo_indice < len(linhas):
+            proxima_linha = limpar_linha_sumario(linhas[proximo_indice])
+
+            if proxima_linha:
+                break
+
+            proximo_indice += 1
+
+        if proximo_indice < len(linhas):
+            proxima_linha = limpar_linha_sumario(linhas[proximo_indice])
+
+            if linha_eh_numero_pagina(proxima_linha):
+                item = {
+                    "secao": linha_atual,
+                    "pagina_inicial": int(proxima_linha)
+                }
+
                 sumario.append(item)
+                secoes_capturadas.add(linha_atual.upper())
+
+                indice = proximo_indice + 1
+                continue
+
+        if sumario:
+            break
+
+        indice += 1
 
     return calcular_paginas_finais_sumario(sumario, len(paginas))
 
@@ -190,15 +237,16 @@ def obter_texto_paginas_por_intervalo(paginas, pagina_inicial, pagina_final):
         numero_pagina = pagina["pagina"]
 
         if pagina_inicial <= numero_pagina <= pagina_final:
+            texto_bruto = pagina["texto"]
+            texto_normalizado = normalizar_texto(texto_bruto)
+
             textos.append(
                 {
                     "pagina": numero_pagina,
-                    "texto_bruto": pagina["texto"],
-                    "texto_normalizado": normalizar_texto(pagina["texto"]),
-                    "qtde_caracteres_bruto": len(pagina["texto"]),
-                    "qtde_caracteres_normalizado": len(
-                        normalizar_texto(pagina["texto"])
-                    )
+                    "texto_bruto": texto_bruto,
+                    "texto_normalizado": texto_normalizado,
+                    "qtde_caracteres_bruto": len(texto_bruto),
+                    "qtde_caracteres_normalizado": len(texto_normalizado)
                 }
             )
 
@@ -238,16 +286,15 @@ def montar_documento_json(caminho_pdf, paginas):
     sumario = extrair_sumario(paginas)
     secoes = montar_secoes(sumario, paginas)
 
-    documento = {
+    return {
         "arquivo_origem": os.path.basename(caminho_pdf),
         "data_processamento": datetime.now().isoformat(timespec="seconds"),
         "total_paginas": len(paginas),
         "sumario_extraido": bool(sumario),
+        "total_itens_sumario": len(sumario),
         "sumario": sumario,
         "secoes": secoes
     }
-
-    return documento
 
 
 def salvar_documento_json(caminho_pdf, paginas):
