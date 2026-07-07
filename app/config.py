@@ -1,9 +1,11 @@
 import os
+from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
 
-DATA_TESTE = os.getenv("DATA_TESTE", "").strip()
+DATA_PESQUISA_DE = os.getenv("DATA_PESQUISA_DE", "").strip()
+DATA_PESQUISA_ATE = os.getenv("DATA_PESQUISA_ATE", "").strip()
 BASE_URL = os.getenv("BASE_URL", "").strip()
 PASTA_DOWNLOAD = os.getenv("PASTA_DOWNLOAD", "storage/pdfs").strip()
 PASTA_LOGS = os.getenv("PASTA_LOGS", "storage/logs").strip()
@@ -49,6 +51,18 @@ def obter_destinatarios_email():
     return destinatarios
 
 
+def _validar_data(valor, nome):
+    if not valor:
+        return
+    try:
+        datetime.strptime(valor, "%Y-%m-%d")
+    except ValueError:
+        raise RuntimeError(
+            f"{nome} invalida. Use o formato AAAA-MM-DD. "
+            f"Valor informado: {valor}"
+        )
+
+
 def validar_configuracoes():
     erros = []
 
@@ -71,6 +85,26 @@ def validar_configuracoes():
 
         if not obter_destinatarios_email():
             erros.append("EMAIL_DESTINATARIOS nao configurado no arquivo .env")
+
+    if DATA_PESQUISA_DE:
+        try:
+            _validar_data(DATA_PESQUISA_DE, "DATA_PESQUISA_DE")
+        except RuntimeError as e:
+            erros.append(str(e))
+
+    if DATA_PESQUISA_ATE:
+        try:
+            _validar_data(DATA_PESQUISA_ATE, "DATA_PESQUISA_ATE")
+        except RuntimeError as e:
+            erros.append(str(e))
+
+    if DATA_PESQUISA_DE and DATA_PESQUISA_ATE:
+        data_de = datetime.strptime(DATA_PESQUISA_DE, "%Y-%m-%d")
+        data_ate = datetime.strptime(DATA_PESQUISA_ATE, "%Y-%m-%d")
+        if data_de > data_ate:
+            erros.append(
+                "DATA_PESQUISA_DE nao pode ser posterior a DATA_PESQUISA_ATE."
+            )
 
     if erros:
         raise RuntimeError(" | ".join(erros))

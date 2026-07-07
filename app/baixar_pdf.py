@@ -63,52 +63,61 @@ def baixar_pdf_diario(logger, data_referencia=None):
             caminho_arquivo
         )
 
-        tamanho_bytes = validar_pdf(caminho_arquivo)
-        tamanho_mb = tamanho_bytes / (1024 * 1024)
+        validar_pdf(caminho_arquivo)
 
         logger.info(
-            "Arquivo existente validado: %s (%s bytes / %.2f MB)",
-            caminho_arquivo,
-            tamanho_bytes,
-            tamanho_mb
+            "Arquivo existente validado: %s",
+            caminho_arquivo
         )
 
-        return caminho_arquivo
+        return caminho_arquivo, url
 
     headers = {
         "User-Agent": "Mozilla/5.0"
     }
 
-    resposta = requests.get(
-        url,
-        headers=headers,
-        stream=True,
-        timeout=60,
-        allow_redirects=True
-    )
+    try:
+        resposta = requests.get(
+            url,
+            headers=headers,
+            stream=True,
+            timeout=60,
+            allow_redirects=True
+        )
+    except requests.RequestException as erro:
+        logger.warning(
+            "Erro de conexao ao baixar %s: %s",
+            url, erro
+        )
+        return None, None
 
     logger.info("Status HTTP: %s", resposta.status_code)
-    logger.info("Content-Type: %s", resposta.headers.get("content-type"))
-    logger.info("URL final apos redirecionamentos: %s", resposta.url)
+
+    if resposta.status_code == 404:
+        logger.info(
+            "PDF nao encontrado para %s (HTTP 404).",
+            data_referencia.date().isoformat()
+        )
+        return None, None
 
     if resposta.status_code != 200:
-        raise RuntimeError(
-            f"Falha ao baixar arquivo. Status HTTP: {resposta.status_code}"
+        logger.warning(
+            "Falha ao baixar PDF. URL: %s | Status HTTP: %s",
+            url,
+            resposta.status_code
         )
+        return None, None
 
     with open(caminho_arquivo, "wb") as arquivo:
         for bloco in resposta.iter_content(chunk_size=1024 * 1024):
             if bloco:
                 arquivo.write(bloco)
 
-    tamanho_bytes = validar_pdf(caminho_arquivo)
-    tamanho_mb = tamanho_bytes / (1024 * 1024)
+    validar_pdf(caminho_arquivo)
 
     logger.info(
-        "Download concluido com sucesso: %s (%s bytes / %.2f MB)",
-        caminho_arquivo,
-        tamanho_bytes,
-        tamanho_mb
+        "Download concluido com sucesso: %s",
+        caminho_arquivo
     )
 
-    return caminho_arquivo
+    return caminho_arquivo, url

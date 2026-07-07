@@ -20,33 +20,54 @@ def montar_assunto_email(resultados):
     return "Alerta - Diário Oficial Piracicaba - Ocorrências Encontradas"
 
 
-def montar_corpo_email(resultados):
+def montar_corpo_email(resultados,termos):
+    from collections import defaultdict
+
     linhas = []
 
     linhas.append("Alerta do Robo Diario Oficial")
     linhas.append("")
+    linhas.append(f"Termo(s) procurado(s): {termos}")
+    linhas.append("")
     linhas.append(f"Total de resultados encontrados: {len(resultados)}")
     linhas.append("")
 
-    for indice, resultado in enumerate(resultados, start=1):
-        linhas.append("-" * 80)
-        linhas.append(f"Resultado {indice}")
-        linhas.append(f"Termo: {resultado.get('termo', '')}")
-        linhas.append(f"Arquivo: {resultado.get('arquivo', '')}")
-        linhas.append(f"Secao: {resultado.get('secao', '')}")
-        linhas.append(f"Pagina: {resultado.get('pagina', '')}")
-        linhas.append(f"Ocorrencias: {resultado.get('ocorrencias', 0)}")
-        linhas.append(f"Possui imagem: {resultado.get('possui_imagem', False)}")
+    por_data = defaultdict(list)
+    for r in resultados:
+        por_data[r.get("data", "")].append(r)
+
+    for data in sorted(por_data):
+        items = por_data[data]
+
+        linhas.append("=" * 80)
+        linhas.append(f"Data: {data} ({len(items)} ocorrencia{'s' if len(items) > 1 else ''})")
+        linhas.append("=" * 80)
         linhas.append("")
 
-        trechos = resultado.get("trechos", [])
+        por_secao = defaultdict(list)
+        for r in items:
+            por_secao[r.get("secao", "Sem secao")].append(r)
 
-        if trechos:
-            linhas.append("Trechos encontrados:")
+        for secao, items_secao in sorted(por_secao.items()):
+            linhas.append(f"--- Secao: {secao} ---")
+            linhas.append("")
 
-            for trecho_indice, trecho in enumerate(trechos, start=1):
-                linhas.append(f"{trecho_indice}. {trecho}")
+            for resultado in items_secao:
+                linhas.append(f"Termo: {resultado.get('termo', '')}")
+                linhas.append(f"Arquivo: {resultado.get('arquivo', '')}")
+                linhas.append(f"Pagina: {resultado.get('pagina', '')}")
+                linhas.append(f"Ocorrencias: {resultado.get('ocorrencias', 0)}")
+                linhas.append(f"URL: {resultado.get('url_download', '')}")
+
+                trechos = resultado.get("trechos", [])
+
+                if trechos:
+                    linhas.append("Trecho:")
+                    linhas.append(f"  {trechos[0]}")
+
                 linhas.append("")
+
+        linhas.append("")
 
     linhas.append("-" * 80)
     linhas.append("Fim do alerta.")
@@ -54,7 +75,7 @@ def montar_corpo_email(resultados):
     return "\n".join(linhas)
 
 
-def enviar_email_alerta(resultados, logger=None):
+def enviar_email_alerta(resultados, logger=None, termos=None):
     if not EMAIL_ATIVO:
         if logger:
             logger.info("Envio de e-mail desativado.")
@@ -68,7 +89,7 @@ def enviar_email_alerta(resultados, logger=None):
     destinatarios = obter_destinatarios_email()
 
     assunto = montar_assunto_email(resultados)
-    corpo = montar_corpo_email(resultados)
+    corpo = montar_corpo_email(resultados, termos)
 
     mensagem = EmailMessage()
     mensagem["From"] = EMAIL_REMETENTE
