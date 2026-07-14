@@ -1,3 +1,5 @@
 venv/
+storage/
+.env
 __pycache__/
-*.pdf
+
